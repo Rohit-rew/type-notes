@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Header from "./header";
+import { NotesContext } from "./context";
 
-function App() {
+export default function App() {
+  const data = React.useContext(NotesContext);
+
+  const [note, setNote] = React.useState<string>("");
+
+  const notesJsx = data.state.notes.map((note , i) => {
+    return (
+      <div key={i} className="note w-2/4 text-left bg-blue-200 rounded shadow m-5 p-1 relative max-w-md">
+        <span onClick={(e)=>deletenote(i)} className="absolute top-0 right-1 text-grey cursor-pointer">
+          X
+        </span>
+        {note.text}
+      </div>
+    );
+  });
+
+  const deletenote = (i:number)=>{
+      data.dispatch({
+        type : "DELETE_NOTE",
+        payload : {index : i}
+      })
+  }
+
+  console.log(data.state.notes)
+
+  const saveNote = (e: React.KeyboardEvent):void => {
+    if (e.key === "Enter") {
+      console.log("yess")
+      if (!note) return;
+      data.dispatch({
+        type: "ADD_NOTE",
+        payload: {
+          text: note,
+        },
+      });
+
+      setNote(()=>{
+        return ""
+      })
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+
+      <div className="flex justify-center h-20 items-center">
+        <input
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          onKeyUp={saveNote}
+          className="border border-blue-200 rounded w-3/4 p-1 box-border outline-none text-red-400 max-w-2xl"
+        />
+      </div>
+      <div className="flex items-center flex-col">{notesJsx}</div>
+    </>
   );
 }
-
-export default App;
