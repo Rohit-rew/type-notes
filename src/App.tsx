@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./header";
+import Note from "./note";
 import { NotesContext } from "./context";
 
 export default function App() {
@@ -8,27 +9,21 @@ export default function App() {
   const [note, setNote] = React.useState<string>("");
   const [render, setrender] = React.useState<boolean>(false);
 
+  
+  const deleteNote = (i:number)=>{
+    data.dispatch({
+      type : "DELETE_NOTE",
+      payload : {index : i}
+    })
+    setrender(val=>!val)
+  }
+  
   const notesJsx = data.state.notes.map((note , i) => {
     return (
-      <div key={i} className="note w-2/4 text-left bg-blue-200 rounded shadow m-5 p-1 relative max-w-md">
-        <span onClick={(e)=>deletenote(i)} className="absolute top-0 right-1 text-red-600 cursor-pointer">
-          X
-        </span>
-        {note.text}
-      </div>
+      <Note key={i} note={note} index={i} deleteNote={deleteNote}/>
     );
   });
-
-  const deletenote = (i:number)=>{
-      data.dispatch({
-        type : "DELETE_NOTE",
-        payload : {index : i}
-      })
-      setrender(val=>!val)
-  }
-
-  console.log(data.state.notes)
-
+  
   const saveNote = (e: React.KeyboardEvent):void => {
     if (e.key === "Enter") {
       console.log("yess")
@@ -37,6 +32,7 @@ export default function App() {
         type: "ADD_NOTE",
         payload: {
           text: note,
+          striked : false
         },
       });
 

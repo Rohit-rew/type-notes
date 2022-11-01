@@ -13,7 +13,7 @@ type PropType = {
 
 type addnotetype = {
     type : "ADD_NOTE",
-    payload : {text :string} 
+    payload : {text :string , striked : boolean} 
 }
 
 type deleteNoteType = {
@@ -21,10 +21,15 @@ type deleteNoteType = {
     payload : {index : number}
 }
 
-type actiontype = addnotetype | deleteNoteType
+type strikeNote = {
+  type : "STRIKE_NOTE",
+  payload : {index : number , isstrike : boolean}
+}
+
+type actiontype = addnotetype | deleteNoteType | strikeNote
 
 type initialstatetype = {
-    notes : {text : string | undefined}[]
+    notes : {text : string | undefined , striked : boolean}[]
 }
 
 const initialstate = {
@@ -38,6 +43,9 @@ const reducer = (state : initialstatetype , action: actiontype) => {
       return state
     case "DELETE_NOTE" :
         state.notes.splice(action.payload.index , 1)
+        return state
+    case "STRIKE_NOTE" :
+        state.notes[action.payload.index].striked = action.payload.isstrike
         return state
     default : 
       return state
