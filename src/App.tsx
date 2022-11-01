@@ -11,7 +11,7 @@ export default function App() {
   const notesJsx = data.state.notes.map((note , i) => {
     return (
       <div key={i} className="note w-2/4 text-left bg-blue-200 rounded shadow m-5 p-1 relative max-w-md">
-        <span onClick={(e)=>deletenote(i)} className="absolute top-0 right-1 text-grey cursor-pointer">
+        <span onClick={(e)=>deletenote(i)} className="absolute top-0 right-1 text-red-600 cursor-pointer">
           X
         </span>
         {note.text}
