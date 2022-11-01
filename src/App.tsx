@@ -6,6 +6,7 @@ export default function App() {
   const data = React.useContext(NotesContext);
 
   const [note, setNote] = React.useState<string>("");
+  const [render, setrender] = React.useState<boolean>(false);
 
   const notesJsx = data.state.notes.map((note , i) => {
     return (
@@ -23,6 +24,7 @@ export default function App() {
         type : "DELETE_NOTE",
         payload : {index : i}
       })
+      setrender(val=>!val)
   }
 
   console.log(data.state.notes)

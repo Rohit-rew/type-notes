@@ -47,8 +47,6 @@ const reducer = (state : initialstatetype , action: actiontype) => {
 export default function ContextProvider(props: PropType) {
   const [state, dispatch] = useReducer(reducer, initialstate);
 
-
-
   return (
     <NotesContext.Provider value={{state , dispatch}}>
       {props.children}
